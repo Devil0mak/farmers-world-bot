@@ -1,50 +1,92 @@
-# Farmers World Bot Free
+# Farmers World Bot
 
-## Video instruction
+Farmers World Bot is a JavaScript project designed to automate interactions with the Farmers World game. This project includes a CI/CD pipeline to ensure code quality and facilitate automated testing.
 
-https://youtu.be/D028TAAe5H8
+## CI/CD Pipeline
 
-## Instalation guide
+The CI/CD pipeline is configured using GitHub Actions and includes the following stages:
 
-1. Open the game and log in.
-2. **Important!** Confirm any operation and in the wax confirmation window check the auto-confirmation checkbox.
-3. To open the console in Chrome, use this keyboard shortcut: `Cmd + Option + J` (on a Mac) or `Ctrl + Shift + J` (on Windows).
-4. Copy the [script](https://github.com/SmartBotBlack/farmers-world-bot/blob/master/index.js) and paste it into the console. Press Enter.
+```yaml
 
-## Current functionality
+1. Checkout Code
+This step checks out the code from the repository to the GitHub Actions runner. It uses the `actions/checkout@v2` action.
 
-- Working with all the maps. Able to work with any kind of NFT.
-- The script presses the "Mine"/"Hatch" button on any map when the button is available.
-- If energy is less than 200 and food more than 20, it makes an exchange.
-- If the strength of the mining tool is less than half, it is repaired. Make sure you have enough gold in your account.
+2. Set up Node.js
+This step sets up the Node.js environment using version 14. It uses the `actions/setup-node@v2` action.
 
-## Changelog
+- name: Checkout code
+  uses: actions/checkout@v2
 
-### 16/12/2021
+3. Install Dependencies
+This step installs the necessary dependencies for the project using npm install.
 
-- Now the bot tries to restore work, even if there was an error.
+  - name: Set up Node.js
+  uses: actions/setup-node@v2
+  with:
+    node-version: '14'
 
-### 14/12/2021
 
-- Fix error mine on first map, if you have Member card.
+4. Lint with ESLint
+This step runs ESLint to ensure the code follows the JavaScript style guide. It installs ESLint and runs it on the project files.
 
-### 13/12/2021
+- name: Install dependencies
+  run: |
+    npm install
 
-- Improved algorithm for closing succes popups.
-- The energy system has been redesigned. The bot now tries to always maintain the maximum amount of energy. This fixes a bug on some single player maps.
-- Improved algorithm for closing CPU error popups.
-- Added a random pause between actions.
-- Fixed a mining bug when using Member card.
+5. Run Tests
+This step runs the tests using the npm test command to ensure the code works as expected.
 
-### 29/11/2021
 
-- Added the ability to select maps for mining. [issues #4](https://github.com/SmartBotBlack/farmers-world-bot/issues/4)
-- Improved the setting of pauses in the game. [issues #4](https://github.com/SmartBotBlack/farmers-world-bot/issues/4)
+- name: Run tests
+  run: |
+    npm test
 
-## Support
 
-_Any problems? [Submit an issue](https://github.com/SmartBotBlack/farmers-world-bot/issues/new) or send message in telegram [@smartbotofficial](https://t.me/smartbotofficial) or email [hello@smartbot.black](hello@smartbot.black)!_
+Docker Containerization
+The project is also containerized using Docker. The Dockerfile sets up a container for the Farmers World Bot application. Here is the content of the Dockerfile:
 
-### Official site
+FROM node:14-slim
 
-https://smartbot.black
+WORKDIR /app
+
+COPY . /app
+
+RUN npm install
+
+CMD ["node", "index.js"]
+
+This Dockerfile does the following:
+
+This Dockerfile does the following:
+
+1.Uses the node:14-slim image as the base image.
+2.Sets the working directory to /app.
+3.Copies the project files into the container.
+4.Installs the project dependencies.
+5.Sets the command to run the bot using node index.js.
+
+
+Continuous Deployment (CD)
+The CD part of the workflow is not functional and deployed to an endpoint in this example.
+
+How to Run Locally
+To run the project locally, follow these steps:
+
+Clone the repository:
+
+git clone https://github.com/<your-username>/farmers-world-bot.git
+cd farmers-world-bot
+
+Install dependencies:
+
+npm install
+
+Run the bot:
+
+node index.js
+
+```
+
+
+## References
+[farmers-world-bot](https://github.com/SmartBotBlack/farmers-world-bot)
